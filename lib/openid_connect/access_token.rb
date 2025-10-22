@@ -28,7 +28,11 @@ module OpenIDConnect
       res = yield
       case res.status
       when 200
-        res.body.with_indifferent_access
+        if res.body.is_a?(String)
+          JSON.parse(res.body).with_indifferent_access
+        else
+          res.body.with_indifferent_access
+        end
       when 400
         raise BadRequest.new('API Access Failed', res)
       when 401
