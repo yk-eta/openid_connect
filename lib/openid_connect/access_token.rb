@@ -26,17 +26,9 @@ module OpenIDConnect
 
     def resource_request
       res = yield
-      puts "res: #{res}"
       case res.status
       when 200
-        raise HttpError.new(500, "type: #{res.body.is_a?(String)} body: #{res.body} json: #{JSON.parse(res.body)}", res)
-        if res.body.is_a?(String)
-          json = JSON.parse(res.body)
-          puts "json: #{json.is_a?(String)} #{json}"
-          json.with_indifferent_access
-        else
-          res.body.with_indifferent_access
-        end
+        JSON.parse(res.body).with_indifferent_access
       when 400
         raise BadRequest.new('API Access Failed', res)
       when 401
