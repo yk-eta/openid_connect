@@ -26,9 +26,10 @@ module OpenIDConnect
 
     def resource_request
       res = yield
+      puts "res: #{res}"
       case res.status
       when 200
-        puts "body: #{res.body.is_a?(String)} #{res.body}"
+        raise HttpError.new(500, "type: #{res.body.is_a?(String)} body: #{res.body} json: #{JSON.parse(res.body)}", res)
         if res.body.is_a?(String)
           json = JSON.parse(res.body)
           puts "json: #{json.is_a?(String)} #{json}"
