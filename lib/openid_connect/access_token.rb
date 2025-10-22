@@ -28,8 +28,11 @@ module OpenIDConnect
       res = yield
       case res.status
       when 200
+        puts "body: #{res.body.is_a?(String)} #{res.body}"
         if res.body.is_a?(String)
-          JSON.parse(res.body).with_indifferent_access
+          json = JSON.parse(res.body)
+          puts "json: #{json.is_a?(String)} #{json}"
+          json.with_indifferent_access
         else
           res.body.with_indifferent_access
         end
